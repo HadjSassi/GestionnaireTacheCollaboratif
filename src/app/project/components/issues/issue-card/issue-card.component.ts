@@ -31,7 +31,7 @@ export class IssueCardComponent implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     const issueChange = changes.issue;
     if (issueChange?.currentValue !== issueChange.previousValue) {
-      this.issueTypeIcon = IssueUtil.getIssueTypeIcon(this.issue.type);
+      this.issueTypeIcon = IssueUtil.getIssueIconByValue(this.issue.type);
       this.priorityIcon = IssueUtil.getIssuePriorityIcon(this.issue.priority);
     }
   }

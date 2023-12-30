@@ -3,13 +3,6 @@
     <div class="flex items-center pt-4 text-textDarkest">
         <issue-type [issue]="issue"></issue-type>
         <div class="flex-auto"></div>
-        <a target="_blank"
-           href="https://github.com/trungk18/jira-clone-angular/issues/new">
-            <j-button icon="feedback"
-                      className="btn-empty">
-                Give Feedback
-            </j-button>
-        </a>
         <j-button icon="trash"
                   [className]="'btn-empty'"
                   (click)="openDeleteIssueModal()">
@@ -34,7 +27,7 @@
             <div class="pt-4 pb-2 text-15 font-medium">Description</div>
             <issue-description [issue]="issue"></issue-description>
 
-            <div class="pt-4 pb-2 text-15 font-medium">Comments</div>
+            <div class="pt-4 pb-2 text-15 font-medium">Commentaires</div>
             <issue-comments [issue]="issue"></issue-comments>
         </div>
         <div class="sm:w-full md:w-5/12 lg:w-2/6 pt-1">
@@ -49,10 +42,11 @@
 
             <div class="mt-3 pt-3 leading-loose border-t border-borderLightest text-textMedium text-13">
                 <div>
-                    Created - {{ issue.createdAt | date:"medium" }}
+                    Crée - {{ issue.createdAt | date:"medium" }}
                 </div>
                 <div>
-                    Updated - {{ issue.updatedAt | date:"medium" }}
+                  <!--todo if there is a modification-->
+                    Modifié - {{ issue.updatedAt | date:"medium" }}
                 </div>
             </div>
         </div>

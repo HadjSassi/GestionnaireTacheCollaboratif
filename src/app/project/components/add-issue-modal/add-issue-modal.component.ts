@@ -52,7 +52,7 @@ export class AddIssueModalComponent implements OnInit {
 
   initForm() {
     this.issueForm = this._fb.group({
-      type: [IssueType.TASK],
+      type: ['Tache'],
       priority: [IssuePriority.MEDIUM],
       title: ['', NoWhitespaceValidator()],
       description: [''],

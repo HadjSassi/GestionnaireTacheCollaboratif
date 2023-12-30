@@ -3,14 +3,14 @@
              containerClassName="flat text-textMedium"
              icon="search"
              [iconSize]="26"
-             placeholder="Search issues by summary, description...">
+             placeholder="Chercher tache par des données relatives...">
     </j-input>
 </div>
 
 <ng-container *ngIf="hasSearchTermInput; else noSearchInputTmpl">
     <ng-container *ngIf="results$ | async as results">
         <ng-container *ngIf="results?.length; else noResultTmpl">
-            <div class="section-title">Issues Result</div>
+            <div class="section-title">Resultat:</div>
             <issue-result *ngFor="let issue of results"
                           (click)="openIssueModal(issue)"
                           [issue]="issue"></issue-result>
@@ -21,7 +21,7 @@
 <ng-template #noSearchInputTmpl>
     <ng-container *ngIf="recentIssues$ | async as recentIssues">
         <ng-container *ngIf="recentIssues?.length; else noResultTmpl">
-            <div class="section-title">Recent Issues</div>
+            <div class="section-title">Taches Récentes:</div>
             <issue-result *ngFor="let issue of recentIssues"
                           (click)="openIssueModal(issue)"
                           [issue]="issue"></issue-result>
@@ -34,8 +34,8 @@
         <svg-icon [name]="'no-result'"
                   [size]="125"></svg-icon>
         <div class="pt-8 font-medium text-xl">
-            We couldn't find anything matching your search
+            Nous Avons rien Trouvé!
         </div>
-        <div class="pt-2 text-15">Try again with a different term.</div>
+        <div class="pt-2 text-15">Essayez autrement!</div>
     </div>
 </ng-template>

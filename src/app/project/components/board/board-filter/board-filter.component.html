@@ -1,7 +1,7 @@
 <div class="flex items-center mt-6">
     <form class="w-40 mr-4">
         <j-input aria-label="search"
-                 icon="search"                 
+                 icon="search"
                  [control]="searchControl">
         </j-input>
     </form>
@@ -20,7 +20,7 @@
             </j-avatar>
         </div>
     </div>
-    <j-button class="ml-3"
+    <!--<j-button class="ml-3"
               className="btn-empty"
               [isActive]="filterQuery.onlyMyIssue$ | async"
               (click)="onlyMyIssueChanged()">
@@ -31,12 +31,12 @@
               (click)="ignoreResolvedChanged()"
               className="btn-empty">
         Ignore Resolved
-    </j-button>
+    </j-button>-->
     <div class="ml-3 flex items-center"
          *ngIf="filterQuery.any$ | async">
         <div class="mr-3 w-px bg-backgroundMedium self-stretch"></div>
         <j-button [className]="'btn-secondary'"
-                  (click)="resetAll()">Clear all
+                  (click)="resetAll()">Reinitialiser tout
         </j-button>
     </div>
 </div>

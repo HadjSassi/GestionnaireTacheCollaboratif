@@ -7,11 +7,8 @@ import { GoogleAnalyticsService } from '@trungk18/core/services/google-analytics
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent {
-  breadcrumbs: string[] = ['Projects', 'Angular Jira Clone', 'Kanban Board'];
+  breadcrumbs: string[] = ['Atelier Développement', 'Mini Projet', 'Gestionnaire de tâche collaboratif'];
 
-  constructor(private _googleAnalytics: GoogleAnalyticsService) {}
+  constructor() {}
 
-  sendTwitterEventButton() {
-    this._googleAnalytics.sendEvent('Share Twitter', 'button');
-  }
 }

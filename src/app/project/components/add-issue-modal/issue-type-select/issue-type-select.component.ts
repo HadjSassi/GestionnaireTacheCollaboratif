@@ -20,6 +20,6 @@ export class IssueTypeSelectComponent {
   }
 
   getIssueTypeIcon(issueType: IssueType) {
-    return IssueUtil.getIssueTypeIcon(issueType);
+    return IssueUtil.getIssueIconByValue(issueType);
   }
 }

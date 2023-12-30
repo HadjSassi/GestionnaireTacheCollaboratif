@@ -31,9 +31,9 @@ export class ProjectService {
         setLoading(this._store),
         tap((project) => {
           this._store.update((state) => ({
-              ...state,
-              ...project
-            }));
+            ...state,
+            ...project
+          }));
         }),
         catchError((error) => {
           this._store.setError(error);

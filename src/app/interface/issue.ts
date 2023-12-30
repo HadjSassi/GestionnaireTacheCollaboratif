@@ -17,18 +17,18 @@ export enum IssueStatus {
 }
 
 export const IssueStatusDisplay = {
-  [IssueStatus.BACKLOG]: 'Backlog',
-  [IssueStatus.SELECTED]: 'Selected for Development',
-  [IssueStatus.IN_PROGRESS]: 'In progress',
-  [IssueStatus.DONE]: 'Done'
+  [IssueStatus.BACKLOG]: 'A faire',
+  [IssueStatus.SELECTED]: 'En cours',
+  [IssueStatus.IN_PROGRESS]: 'Echec Ou Probléme',
+  [IssueStatus.DONE]: 'Fini'
 };
 
 export enum IssuePriority {
-  LOWEST = 'Lowest',
-  LOW = 'Low',
-  MEDIUM = 'Medium',
-  HIGH = 'High',
-  HIGHEST = 'Highest'
+  LOWEST = 'Trés Faible',
+  LOW = 'Faible',
+  MEDIUM = 'Moyenne',
+  HIGH = 'Haute',
+  HIGHEST = 'Trés Haute'
 }
 
 export const IssuePriorityColors = {

@@ -30,7 +30,6 @@ import { UserComponent } from './components/user/user.component';
 import { NZ_JIRA_ICONS } from './config/icons';
 import { BoardComponent } from './pages/board/board.component';
 import { FullIssueDetailComponent } from './pages/full-issue-detail/full-issue-detail.component';
-import { SettingsComponent } from './pages/settings/settings.component';
 import { ProjectRoutingModule } from './project-routing.module';
 import { ProjectComponent } from './project.component';
 
@@ -42,7 +41,6 @@ import { ProjectComponent } from './project.component';
     ...IssueUtilComponents,
     ProjectComponent,
     BoardComponent,
-    SettingsComponent,
     FullIssueDetailComponent,
     SearchDrawerComponent,
     IssueResultComponent,

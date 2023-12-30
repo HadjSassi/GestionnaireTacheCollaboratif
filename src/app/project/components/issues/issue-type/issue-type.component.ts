@@ -14,7 +14,7 @@ export class IssueTypeComponent implements OnInit, OnChanges {
   @Input() issue: JIssue;
 
   get selectedIssueTypeIcon(): string {
-    return IssueUtil.getIssueTypeIcon(this.issue.type);
+    return IssueUtil.getIssueIconByValue(this.issue.type);
   }
 
   issueTypes: IssueTypeWithIcon[];

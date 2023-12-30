@@ -17,23 +17,23 @@
             <textarea #commentBoxRef
                       class="textarea-inline-control textarea-border"
                       [formControl]="commentControl"
-                      placeholder="Add a comment"
+                      placeholder="Ajouter un commentaire"
                       [rows]="2"
                       cdkTextareaAutosize
                       (click)="setCommentEdit(true)">
             </textarea>
             <div *ngIf="!isEditing"
-                 class="text-xs"><strong>Pro tip: </strong>press <span class="px-1 font-semibold bg-backgroundMedium">M</span> to comment
+                 class="text-xs"><strong>Conseil : </strong>Cliquez <span class="px-1 font-semibold bg-backgroundMedium">M</span> Pour Commenter
             </div>
             <div *ngIf="isEditing"
                  class="flex pt-2 pb-4 items-center">
                 <j-button [className]="'btn btn-primary mr-2'"
                           (click)="addComment()">
-                    Save
+                    Envoyer
                 </j-button>
                 <j-button [className]="'btn btn-empty'"
                           (click)="cancelAddComment()">
-                    Cancel
+                    Annuler
                 </j-button>
             </div>
         </div>

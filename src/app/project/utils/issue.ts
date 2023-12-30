@@ -5,7 +5,31 @@ export class IssueUtil {
   static getIssueTypeIcon(issueType: IssueType): string {
     return issueType?.toLowerCase();
   }
+  static getIssueTypeValue(issueType: IssueType): string {
+    switch (issueType) {
+      case IssueType.STORY:
+        return 'Mission';
+      case IssueType.TASK:
+        return 'Tache';
+      case IssueType.BUG:
+        return 'Error';
+      default:
+        return 'Travail';
+    }
+  }
 
+  static getIssueIconByValue(issueType: string): string {
+    switch (issueType) {
+      case 'Mission':
+        return IssueType.STORY.toLowerCase();
+      case 'Tache':
+        return IssueType.TASK.toLowerCase();
+      case 'Error':
+        return IssueType.BUG.toLowerCase();
+      default:
+        return IssueType.TASK.toLowerCase();
+    }
+  }
   static getIssuePriorityIcon(issuePriority: IssuePriority): IssuePriorityIcon {
     return new IssuePriorityIcon(issuePriority);
   }
