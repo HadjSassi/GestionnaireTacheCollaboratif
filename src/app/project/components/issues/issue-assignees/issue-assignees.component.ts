@@ -23,9 +23,9 @@ export class IssueAssigneesComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     const issueChange = changes.issue;
-    if (this.users && issueChange.currentValue !== issueChange.previousValue) {
+    /*if (this.users && issueChange.currentValue !== issueChange.previousValue) {
       this.assignees = this.issue.userIds.map((userId) => this.users.find((x) => x.id === userId));
-    }
+    }*/
   }
 
   removeUser(userId: string) {

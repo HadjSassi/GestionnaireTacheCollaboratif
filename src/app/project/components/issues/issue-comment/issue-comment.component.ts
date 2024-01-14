@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, HostListener, ElementRef, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { JComment } from '@trungk18/interface/comment';
 import { JUser } from '@trungk18/interface/user';
@@ -20,7 +20,9 @@ export class IssueCommentComponent implements OnInit {
   commentControl: FormControl;
   user: JUser;
   isEditing: boolean;
-
+  isEditingComment: boolean = false;
+  commentBody : string = "";
+  isModified: boolean = false;
   constructor(
     private _authQuery: AuthQuery,
     private projectService: ProjectService
@@ -44,6 +46,9 @@ export class IssueCommentComponent implements OnInit {
       if (this.createMode) {
         this.comment = new JComment(this.issueId, this.user);
       }
+      this.commentBody = this.comment.body;
+      this.isModified = this.comment.updatedAt != this.comment.createdAt;
+      console.log(this.isModified);
     });
   }
 
@@ -66,5 +71,22 @@ export class IssueCommentComponent implements OnInit {
   cancelAddComment() {
     this.commentControl.patchValue('');
     this.setCommentEdit(false);
+  }
+
+  modifyComment() {
+    this.isEditingComment = !this.isEditingComment;
+  }
+
+  deleteComment() {
+    this.projectService.deleteComment(this.comment.issueId,this.comment.id);
+  }
+
+  saveModifyComment(mess) {
+    const now = new Date();
+    let updatedComment:JComment = {...this.comment};
+    updatedComment.body = mess;
+    updatedComment.updatedAt = now.toISOString();
+    this.projectService.updateIssueComment(this.comment.issueId, updatedComment);
+    this.modifyComment();
   }
 }

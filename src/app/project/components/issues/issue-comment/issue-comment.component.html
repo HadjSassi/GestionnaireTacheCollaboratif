@@ -1,19 +1,48 @@
 <div class="relative mt-3 text-15">
-    <j-avatar class="absolute top-0 left-0"
-              [avatarUrl]="user.avatarUrl"
-              [size]="30">
-    </j-avatar>
-    <div class="pl-10"
-         *ngIf="comment">
-        <div class="inline-block mr-3 mb-2 text-textDark font-medium">
-            {{ comment.user.name}}
-        </div>
-        <div *ngIf="!createMode"
-             class="inline-block pb-2 text-textDark text-sm">
-            {{ comment.updatedAt | date:"medium" }}
-        </div>
-        <div class="editing-area"
-             *ngIf="createMode">
+  <j-avatar class="absolute top-0 left-0"
+            [avatarUrl]="user.avatarUrl"
+            [size]="30">
+  </j-avatar>
+  <div class="pl-10"
+       *ngIf="comment">
+    <div class="inline-block mr-3 mb-2 text-textDark font-medium">
+      {{ comment.user.name }}
+    </div>
+    <div *ngIf="!createMode"
+         class="inline-block pb-2 text-textDark text-sm">
+      {{ comment.createdAt | date:"dd/MM/yyyy HH:mm" }}
+      <span *ngIf="isModified" >[Modifié le {{ comment.updatedAt | date:"dd/MM/yyyy HH:mm" }}]</span>
+      <j-button icon="pencil"
+                [className]="'btn-empty'"
+                (click)="modifyComment()">
+      </j-button>
+      <j-button
+        icon="trash"
+        (click)="deleteComment()"
+        [className]="'btn-empty'">
+      </j-button>
+    </div>
+    <!-- Add this input field for modifying the comment -->
+    <div *ngIf="isEditingComment" class="editing-area">
+        <textarea
+          #updatedCommentBoxRef
+          [(ngModel)]="this.commentBody"
+          [formControl]="commentControl"
+          [placeholder]="comment.body"
+          [rows]="2"
+          cdkTextareaAutosize
+          class="textarea-inline-control textarea-border"></textarea>
+      <div class="flex pt-2 pb-4 items-center">
+        <j-button [className]="'btn btn-primary mr-2'" (click)="saveModifyComment(commentBody)">
+          Modifier
+        </j-button>
+        <j-button [className]="'btn btn-empty'" (click)="modifyComment()">
+          Annuler
+        </j-button>
+      </div>
+    </div>
+    <div class="editing-area"
+         *ngIf="createMode">
             <textarea #commentBoxRef
                       class="textarea-inline-control textarea-border"
                       [formControl]="commentControl"
@@ -22,23 +51,24 @@
                       cdkTextareaAutosize
                       (click)="setCommentEdit(true)">
             </textarea>
-            <div *ngIf="!isEditing"
-                 class="text-xs"><strong>Conseil : </strong>Cliquez <span class="px-1 font-semibold bg-backgroundMedium">M</span> Pour Commenter
-            </div>
-            <div *ngIf="isEditing"
-                 class="flex pt-2 pb-4 items-center">
-                <j-button [className]="'btn btn-primary mr-2'"
-                          (click)="addComment()">
-                    Envoyer
-                </j-button>
-                <j-button [className]="'btn btn-empty'"
-                          (click)="cancelAddComment()">
-                    Annuler
-                </j-button>
-            </div>
-        </div>
-        <div *ngIf="!createMode"
-             [innerHTML]="comment.body">
-        </div>
+      <div *ngIf="!isEditing"
+           class="text-xs"><strong>Conseil : </strong>Cliquez <span
+        class="px-1 font-semibold bg-backgroundMedium">M</span> Pour Commenter
+      </div>
+      <div *ngIf="isEditing"
+           class="flex pt-2 pb-4 items-center">
+        <j-button [className]="'btn btn-primary mr-2'"
+                  (click)="addComment()">
+          Envoyer
+        </j-button>
+        <j-button [className]="'btn btn-empty'"
+                  (click)="cancelAddComment()">
+          Annuler
+        </j-button>
+      </div>
     </div>
+    <div *ngIf="!createMode && !isEditingComment"
+         [innerHTML]="comment.body">
+    </div>
+  </div>
 </div>

@@ -1,0 +1,16 @@
+{
+  "name": "backend-gestionnairetachecollaboratif",
+  "version": "1.0.0",
+  "description": "This is the Backend for the Application of the Mini-Projet of Collaborative Task Management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hadj Sassi Mahdi",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}

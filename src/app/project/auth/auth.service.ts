@@ -12,12 +12,13 @@ export class AuthService {
   private baseUrl: string;
   constructor(private _http: HttpClient, private _store: AuthStore) {
     this.baseUrl = environment.apiUrl;
+    // this.baseUrl = '/assets/data';
   }
 
   login({ email = '', password = '' }: LoginPayload) {
     this._store.setLoading(true);
     this._http
-      .get<JUser>(`${this.baseUrl}/auth.json`)
+      .get<JUser>(`${this.baseUrl}/auth/all`)
       .pipe(
         map((user) => {
           this._store.update((state) => ({

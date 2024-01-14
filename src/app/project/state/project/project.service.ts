@@ -26,7 +26,7 @@ export class ProjectService {
 
   getProject() {
     this._http
-      .get<JProject>(`${this.baseUrl}/project.json`)
+      .get<JProject>(`${this.baseUrl}/data/all`)
       .pipe(
         setLoading(this._store),
         tap((project) => {
@@ -50,7 +50,7 @@ export class ProjectService {
     }));
   }
 
-  updateIssue(issue: JIssue) {
+/*  updateIssue(issue: JIssue) {
     issue.updatedAt = DateUtil.getNow();
     this._store.update((state) => {
       const issues = arrayUpsert(state.issues, issue.id, issue);
@@ -59,18 +59,43 @@ export class ProjectService {
         issues
       };
     });
+  }*/
+  updateIssue(issue: JIssue) {
+    this._http.put(`${this.baseUrl}/data/update/issue`, issue).subscribe(
+      () => {
+        this.getProject();
+        console.log('Issue updated successfully');
+      },
+      (error) => {
+        this.getProject();
+        this._store.setError(error);
+        console.log('Error updating issue');
+      }
+    );
   }
 
   deleteIssue(issueId: string) {
-    this._store.update((state) => {
-      const issues = arrayRemove(state.issues, issueId);
-      return {
-        ...state,
-        issues
-      };
-    });
+    this._http.delete(`${this.baseUrl}/data/delete/${issueId}`).subscribe(
+      () => {
+        this._store.update((state) => {
+          const issues = arrayRemove(state.issues, issueId);
+          this.getProject();
+          console.log('Issue deleted successfully');
+          return {
+            ...state,
+            issues
+          };
+        });
+      },
+      (error) => {
+        this.getProject();
+        this._store.setError(error);
+        console.log('Error deleting issue');
+      }
+    );
   }
 
+/*
   updateIssueComment(issueId: string, comment: JComment) {
     const allIssues = this._store.getValue().issues;
     const issue = allIssues.find((x) => x.id === issueId);
@@ -84,4 +109,41 @@ export class ProjectService {
       comments
     });
   }
+*/
+
+  updateIssueComment(issueId: string, comment: JComment) {
+    const data = { issueId, comment };
+    this._http.put(`${this.baseUrl}/data/update/issue/comment`, data).subscribe(
+      () => {
+        this.getProject();
+        console.log('Issue comment updated successfully');
+      },
+      (error) => {
+        this.getProject();
+        this._store.setError(error);
+        console.log('Error updating issue comment');
+      }
+    );
+  }
+
+  modifyComment(issueId: string, comment: JComment){
+
+  }
+
+  deleteComment(issueId: string, commentId: string){
+    this._http.delete(`${this.baseUrl}/data/delete/${issueId}/${commentId}`).subscribe(
+      () => {
+        this._store.update((state) => {
+          this.getProject();
+          console.log('Comment deleted successfully');
+        });
+      },
+      (error) => {
+        this.getProject();
+        this._store.setError(error);
+        console.log('Error deleting issue');
+      }
+    );
+  }
+
 }
