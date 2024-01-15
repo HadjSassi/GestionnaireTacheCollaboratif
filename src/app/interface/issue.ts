@@ -50,7 +50,7 @@ export interface JIssue {
   timeSpent: number;
   timeRemaining: number;
   createdAt: string;
-  updatedAt: string;
+  updatedAt: string;//todo data de fin
   reporterId: string;
   userIds: string[];
   comments: JComment[];

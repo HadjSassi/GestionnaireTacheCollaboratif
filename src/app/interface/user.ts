@@ -3,7 +3,5 @@ export interface JUser {
   name: string;
   email: string;
   avatarUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  issueIds: string[];
+  password: string;
 }

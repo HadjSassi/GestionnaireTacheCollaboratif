@@ -1,0 +1,48 @@
+<div style="margin: auto; margin-top: 2%;" class="wrapper">
+  <div class="title-text">
+    <div class="title login" *ngIf="selectedForm === 'login'">Authentifier</div>
+    <div class="title signup" *ngIf="selectedForm === 'signup'">S'inscrire</div>
+  </div>
+  <div class="form-container">
+    <div class="slide-controls">
+      <input type="radio" name="slide" id="login" [(ngModel)]="selectedForm" value="login">
+      <input type="radio" name="slide" id="signup" [(ngModel)]="selectedForm" value="signup">
+      <label for="login" class="slide login" (click)="toggleForm('login')">Authentifier</label>
+      <label for="signup" class="slide signup" (click)="toggleForm('signup')">S'inscrire</label>
+      <div class="slider-tab"></div>
+    </div>
+    <div class="form-inner">
+      <form (ngSubmit)="signIn()" class="login" *ngIf="selectedForm === 'login'">
+        <div class="field">
+          <input type="text" name="email1" placeholder="Email Address" required>
+        </div>
+        <div class="field">
+          <input type="password" name="pass1" placeholder="Mot de passe" required>
+        </div>
+        <div *ngIf="isError" class="signup-link"><span class="text-red-700">Faux Coordonnés!</span></div>
+        <!--<div class="pass-link"><a href="#">Forgot password?</a></div>-->
+        <div class="field btn">
+          <div class="btn-layer"></div>
+          <input type="submit" value="Authentifier">
+        </div>
+        <div class="signup-link">Vous n'avez pas un compte?<br> <a  (click)="toggleForm('signup')">S'inscrire maintenant</a></div>
+      </form>
+      <form (ngSubmit)="signUp()" (keyup)="checkPass()"  class="signup" *ngIf="selectedForm === 'signup'">
+        <div class="field">
+          <input type="text" name="email" placeholder="Email Address" required>
+        </div>
+        <div class="field">
+          <input type="password" name="pass" placeholder="Mot de passe" required>
+        </div>
+        <div class="field">
+          <input type="password" name="confirm" placeholder="Confirmer Mot de passe" required>
+        </div>
+        <div *ngIf="isError" class="signup-link"><span class="text-red-700">Mail déjà existant!</span></div>
+        <div class="field btn">
+          <div class="btn-layer"></div>
+          <input type="submit" [ngStyle]="{'color': (!isValidPass || !isValidMail) ? 'gray' : 'white'}" [disabled]="!isValidPass || !isValidMail" value="S'inscrire">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

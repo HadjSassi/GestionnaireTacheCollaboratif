@@ -7,32 +7,56 @@
     {
       "id": "d65047e5-f4cf-4caa-9a38-6073dcbab7d1",
       "name": "Trung Vo",
+      "email": "mahdihadjsassi1@gmail.com",
+      "password": "Mahdihadjsassi1",
       "avatarUrl": "https://res.cloudinary.com/dvujyxh7e/image/upload/c_scale,w_48/v1593253478/trung-vo_bioxmc.png",
       "projectId": "140892"
     },
     {
       "id": "7ac265f9-b9ac-443f-a2b2-795682e579a4",
       "name": "Iron Man",
-      "avatarUrl": "https://res.cloudinary.com/dvujyxh7e/image/upload/c_scale,w_48/v1592405732/ironman_c3jrbc.jpg",
+      "email": "admin@admin.admin",
+      "password": "admin",
+      "avatarUrl": "assets/avatars/2.jpg",
       "projectId": "140892"
     },
     {
       "id": "94502aad-c97f-43e1-a9d1-28cf3e4937a7",
       "name": "Captain",
+      "email": "mahdihadjsassi3@gmail.com",
+      "password": "Mahdihadjsassi3",
       "avatarUrl": "https://res.cloudinary.com/dvujyxh7e/image/upload/c_scale,w_48/v1592405732/captain_e8s9nk.jpg",
       "projectId": "140892"
     },
     {
       "id": "610451aa-10c8-4d7e-9363-311357c0b0dd",
       "name": "Thor",
+      "email": "mahdihadjsassi4@gmail.com",
+      "password": "Mahdihadjsassi4",
       "avatarUrl": "https://res.cloudinary.com/dvujyxh7e/image/upload/c_scale,w_48/v1592405731/thor_juqwzf.jpg",
       "projectId": "140892"
     },
     {
       "id": "081ccaa1-5595-4621-8074-ede4927e67b0",
       "name": "Spider Man",
+      "email": "mahdihadjsassi5@gmail.com",
+      "password": "Mahdihadjsassi5",
       "avatarUrl": "https://res.cloudinary.com/dvujyxh7e/image/upload/c_scale,w_48/v1592405731/spiderman_zlrtx0.jpg",
       "projectId": "140892"
+    },
+    {
+      "email": "visitor@visitor.visitor",
+      "avatarUrl": "assets/avatars/1.jpg",
+      "password": "visitor",
+      "name": "visitor@visitor.visitor",
+      "id": "738b-6e-ba-a6-2e5966"
+    },
+    {
+      "email": "hadjsassiscompany@gmail.com",
+      "avatarUrl": "assets/avatars/1.jpg",
+      "password": "test",
+      "name": "hadjsassiscompany@gmail.com",
+      "id": "a862-24-47-b7-ab0784"
     }
   ],
   "issues": [
@@ -212,7 +236,7 @@
       "id": "9554",
       "title": "Hello World yeah!",
       "description": "<h3>Hello World hello world</h3>",
-      "type": "Task",
+      "type": "Tache",
       "status": "Backlog",
       "priority": "High",
       "listPosition": 1,
@@ -253,8 +277,8 @@
             "updatedAt": "2020-06-16T16:00:00.000Z"
           },
           "createdAt": "2024-01-14T01:45:10.854Z",
-          "updatedAt": "2024-01-14T02:15:16.059Z",
-          "body": "bye"
+          "updatedAt": "2024-01-14T20:17:59.929Z",
+          "body": "good night"
         },
         {
           "id": "1705198305202",

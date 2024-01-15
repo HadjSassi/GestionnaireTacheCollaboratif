@@ -129,7 +129,7 @@ app.get('/data/all', (req, res) => {
 
 
 app.get('/auth/all', (req, res) => {
-  const dataFilePath = path.join(__dirname, 'auth.json');
+  const dataFilePath = path.join(__dirname, 'data.json');
   fs.readFile(dataFilePath, 'utf8', (err, data) => {
     if (err) {
       console.error('Error reading data.json:', err);
@@ -175,6 +175,83 @@ app.put('/data/update/issue/comment', (req, res) => {
   updateIssueCommentInData(issueId, comment);
   res.json({ message: 'Issue comment updated successfully.' });
 });
+
+
+// Endpoint to handle user sign-in
+app.post('/auth/signin', (req, res) => {
+  const { email, password } = req.body;
+  console.log(req.body);
+  console.log(password);
+  // Load existing users from data.json
+  const dataFilePath = path.join(__dirname, 'data.json');
+
+  try {
+    // Check if the file exists
+    fs.accessSync(dataFilePath, fs.constants.R_OK);
+
+    const rawData = fs.readFileSync(dataFilePath);
+    const data = JSON.parse(rawData);
+
+    // Check if the "users" array exists in data.json
+    if (data.users && Array.isArray(data.users)) {
+      // Check if the user with the provided email and password exists
+      const user = data.users.find(u => u.email === email && u.password === password);
+
+      if (user) {
+        console.log('User Sign-In:', user);
+        res.json({ message: 'Sign-in successful.', user });
+      } else {
+        res.status(401).json({ message: 'Invalid credentials.' });
+      }
+    } else {
+      res.status(500).json({ message: 'Invalid data file format.' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: 'Error reading data file.' });
+  }
+});
+
+
+app.post('/auth/signup', (req, res) => {
+  const newUser = req.body;
+  console.log(newUser);
+  // Load existing users from data.json
+  const dataFilePath = path.join(__dirname, 'data.json');
+
+  try {
+    // Check if the file exists
+    fs.accessSync(dataFilePath, fs.constants.R_OK);
+
+    const rawData = fs.readFileSync(dataFilePath);
+    const data = JSON.parse(rawData);
+
+    // Check if the "users" array exists in data.json
+    if (data.users && Array.isArray(data.users)) {
+      // Check if the user with the provided email already exists
+      const existingUser = data.users.find(u => u.email === newUser.email);
+
+      if (existingUser) {
+        res.status(409).json({ message: 'User with this email already exists.' });
+      } else {
+        // Add the new user to the "users" array
+        data.users.push(newUser);
+
+        // Save the updated data back to data.json
+        fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
+
+        console.log('New User Signed Up:', newUser);
+        res.json({ message: 'Sign-up successful.', user: newUser });
+      }
+    } else {
+      res.status(500).json({ message: 'Invalid data file format.' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: 'Error reading or writing data file.' });
+  }
+});
+
+
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });

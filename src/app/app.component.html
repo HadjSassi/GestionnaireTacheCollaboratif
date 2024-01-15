@@ -1,7 +1,12 @@
-<div id="app-frame">
-    <nz-spin class="global-spinner"
-             [nzSpinning]="projectQuery.isLoading$ | async"
-             nzSize="large">
-        <router-outlet></router-outlet>
-    </nz-spin>
+<div *ngIf="isNotAuthRoute" id="app-frame">
+  <nz-spin class="global-spinner"
+           [nzSpinning]="projectQuery.isLoading$ | async"
+           nzSize="large">
+    <router-outlet></router-outlet>
+  </nz-spin>
+  <!--  <router-outlet></router-outlet>-->
+</div>
+
+<div *ngIf="!isNotAuthRoute">
+  <router-outlet></router-outlet>
 </div>

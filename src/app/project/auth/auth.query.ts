@@ -4,6 +4,7 @@ import { Query } from '@datorama/akita';
 
 @Injectable({ providedIn: 'root' })
 export class AuthQuery extends Query<AuthState> {
+  //todo serach for the current user
   user$ = this.select();
   userId$ = this.select('id');
 
