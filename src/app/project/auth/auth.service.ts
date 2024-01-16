@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JUser } from '@trungk18/interface/user';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, finalize, map } from 'rxjs/operators';
 import { AuthStore } from './auth.store';
 import { environment } from 'src/environments/environment';
@@ -15,10 +15,10 @@ export class AuthService {
     // this.baseUrl = '/assets/data';
   }
 
-  login({ email = '', password = '' }: LoginPayload) {
+  login({ email = '' }: LoginPayload) {
     this._store.setLoading(true);
     this._http
-      .get<JUser>(`${this.baseUrl}/auth/all`)
+      .get<JUser>(`${this.baseUrl}/data/auth/${email}`)
       .pipe(
         map((user) => {
           this._store.update((state) => ({

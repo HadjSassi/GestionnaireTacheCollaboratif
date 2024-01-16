@@ -23,6 +23,7 @@ export class IssueCommentComponent implements OnInit {
   isEditingComment: boolean = false;
   commentBody : string = "";
   isModified: boolean = false;
+  modifiable: boolean = false;
   constructor(
     private _authQuery: AuthQuery,
     private projectService: ProjectService
@@ -48,7 +49,7 @@ export class IssueCommentComponent implements OnInit {
       }
       this.commentBody = this.comment.body;
       this.isModified = this.comment.updatedAt != this.comment.createdAt;
-      console.log(this.isModified);
+      this.modifiable = this.comment.user.id === this.user.id;
     });
   }
 

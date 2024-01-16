@@ -12,6 +12,8 @@ import { JUser } from '@trungk18/interface/user';
 import { tap } from 'rxjs/operators';
 import { NoWhitespaceValidator } from '@trungk18/core/validators/no-whitespace.validator';
 import { DateUtil } from '@trungk18/project/utils/date';
+import { AuthService } from '@trungk18/auth/auth.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'add-issue-modal',
@@ -24,7 +26,8 @@ export class AddIssueModalComponent implements OnInit {
   assignees$: Observable<JUser[]>;
   issueForm: FormGroup;
   editorOptions = quillConfiguration;
-
+  endDate: string = this._datePipe.transform(new Date(), 'yyyy-MM-dd');
+  minDate: string = this._datePipe.transform(new Date(), 'yyyy-MM-dd');
   get f() {
     return this.issueForm?.controls;
   }
@@ -33,7 +36,10 @@ export class AddIssueModalComponent implements OnInit {
     private _fb: FormBuilder,
     private _modalRef: NzModalRef,
     private _projectService: ProjectService,
-    private _projectQuery: ProjectQuery) {}
+    private _authService: AuthService,
+    private _projectQuery: ProjectQuery,
+    private _datePipe: DatePipe
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -42,12 +48,17 @@ export class AddIssueModalComponent implements OnInit {
       tap((users) => {
         const [user] = users;
         if (user) {
-          this.f.reporterId.patchValue(user.id);
+          this._authService.getUser(localStorage.getItem("user")).subscribe((a:JUser)=>{
+            this.f.reporterId.patchValue(a.id);
+          });
         }
       })
     );
-
     this.assignees$ = this._projectQuery.users$;
+  }
+
+  updateEndDate(event: any) {
+    this.endDate = event.target.value;
   }
 
   initForm() {
@@ -71,7 +82,7 @@ export class AddIssueModalComponent implements OnInit {
       id: IssueUtil.getRandomId(),
       status: IssueStatus.BACKLOG,
       createdAt: now,
-      updatedAt: now
+      updatedAt: this.endDate
     };
 
     this._projectService.updateIssue(issue);

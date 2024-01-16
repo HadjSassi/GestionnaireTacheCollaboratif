@@ -11,7 +11,7 @@ export class IssueResultComponent {
   @Input() issue: JIssue;
 
   get issueTypeIcon() {
-    return IssueUtil.getIssueTypeIcon(this.issue?.type);
+    return IssueUtil.getIssueIconByValue(this.issue?.type);
   }
 
   constructor() {}

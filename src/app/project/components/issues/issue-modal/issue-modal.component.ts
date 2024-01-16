@@ -13,12 +13,14 @@ import { DeleteIssueModel } from '@trungk18/interface/ui-model/delete-issue-mode
 })
 export class IssueModalComponent {
   @Input() issue$: Observable<JIssue>;
+  issueId2 : string ;
 
   constructor(
     private _modal: NzModalRef,
     private _router: Router,
     private _projectService: ProjectService
-  ) {}
+  ) {
+  }
 
   closeModal() {
     this._modal.close();

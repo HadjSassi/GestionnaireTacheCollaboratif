@@ -3,7 +3,7 @@
     <div class="flex items-center pt-4 text-textDarkest">
         <issue-type [issue]="issue"></issue-type>
         <div class="flex-auto"></div>
-        <j-button icon="trash"
+        <j-button icon="trash" *ngIf="modifiable"
                   [className]="'btn-empty'"
                   (click)="openDeleteIssueModal()">
         </j-button>
@@ -42,11 +42,10 @@
 
             <div class="mt-3 pt-3 leading-loose border-t border-borderLightest text-textMedium text-13">
                 <div>
-                    Crée - {{ issue.createdAt | date:"medium" }}
+                    Crée - {{ issue.createdAt | date:"MM/dd/yyyy" }}
                 </div>
                 <div>
-                  <!--todo if there is a modification-->
-                    Modifié - {{ issue.updatedAt | date:"medium" }}
+                    Modifié - <input type="date" [min]="minDate" [value]="endDate" (input)="updateEndDate($event)">
                 </div>
             </div>
         </div>

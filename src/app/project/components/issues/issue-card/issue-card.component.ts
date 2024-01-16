@@ -43,7 +43,8 @@ export class IssueCardComponent implements OnChanges, OnInit {
       nzClosable: false,
       nzFooter: null,
       nzComponentParams: {
-        issue$: this._projectQuery.issueById$(issueId)
+        issue$: this._projectQuery.issueById$(issueId),
+        issueId2: this.issue.id
       }
     });
   }

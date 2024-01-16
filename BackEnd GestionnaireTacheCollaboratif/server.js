@@ -11,8 +11,8 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // Include DELETE method
   next();
 });
-
-app.use(bodyParser.json());
+// Increase the limit for the request body
+app.use(bodyParser.json({ limit: '1Gb' })); // Adjust the limit as needed
 
 // Function to delete an issue from data.json
 function deleteIssueFromData(issueId) {
@@ -58,6 +58,10 @@ function updateIssueCommentInData(issueId, comment) {
   const issueToUpdate = data.issues.find(existingIssue => existingIssue.id === issueId);
 
   if (issueToUpdate) {
+    // Ensure that the 'comments' array exists
+    if (!issueToUpdate.comments) {
+      issueToUpdate.comments = [];
+    }
     // Check if the comment already exists
     const existingCommentIndex = issueToUpdate.comments.findIndex(existingComment => existingComment.id === comment.id);
 
@@ -114,22 +118,44 @@ function deleteCommentFromIssue(issueId, commentId) {
   }
 }
 
-app.get('/data/all', (req, res) => {
+
+// Add this endpoint to get a user by email
+app.get('/data/auth/:email', (req, res) => {
+  const userEmail = req.params.email;
   const dataFilePath = path.join(__dirname, 'data.json');
+
   fs.readFile(dataFilePath, 'utf8', (err, data) => {
     if (err) {
       console.error('Error reading data.json:', err);
       res.status(500).json({ error: 'Internal Server Error' });
     } else {
-      res.set('Content-Type', 'application/json');
-      res.send(data);
+      const jsonData = JSON.parse(data);
+      const users = jsonData.users || [];
+
+      // Find the user with the specified email
+      const user = users.find(u => u.email === userEmail);
+
+      if (user) {
+        // Format the response in the desired form
+        const formattedUser = {
+          id: user.id,
+          name: user.name,
+          avatarUrl: user.avatarUrl,
+          createdAt: "2020-06-16T16:00:00.000Z", // Replace with the actual creation date
+          updatedAt: "2020-06-16T16:00:00.000Z"  // Replace with the actual update date
+        };
+
+        res.set('Content-Type', 'application/json');
+        res.send(formattedUser);
+      } else {
+        res.status(404).json({ message: 'User not found.' });
+      }
     }
   });
 });
-
 
 app.get('/auth/all', (req, res) => {
-  const dataFilePath = path.join(__dirname, 'data.json');
+  const dataFilePath = path.join(__dirname, 'auth.json');
   fs.readFile(dataFilePath, 'utf8', (err, data) => {
     if (err) {
       console.error('Error reading data.json:', err);
@@ -140,42 +166,6 @@ app.get('/auth/all', (req, res) => {
     }
   });
 });
-
-// Endpoint to delete an issue by ID
-app.delete('/data/delete/:id', (req, res) => {
-  const issueId = req.params.id;
-
-  // Call the deleteIssueFromData function to delete the issue from data.json
-  deleteIssueFromData(issueId);
-
-  res.json({ message: `Issue with ID ${issueId} deleted successfully.` });
-});
-
-// Endpoint to delete a commebt in an issue by ID
-app.delete('/data/delete/:idissue/:idcomment', (req, res) => {
-  const issueId = req.params.idissue;
-  const commentId = req.params.idcomment;
-
-  // Call the deleteCommentFromIssue function to delete the comment from data.json
-  deleteCommentFromIssue(issueId, commentId);
-
-  res.json({ message: `Comment with ID ${commentId} in Issue ID ${issueId} deleted successfully.` });
-});
-
-// Endpoint to update an issue
-app.put('/data/update/issue', (req, res) => {
-  const updatedIssue = req.body;
-  updateIssueInData(updatedIssue);
-  res.json({ message: 'Issue updated successfully.' });
-});
-
-// Endpoint to update an issue comment
-app.put('/data/update/issue/comment', (req, res) => {
-  const { issueId, comment } = req.body;
-  updateIssueCommentInData(issueId, comment);
-  res.json({ message: 'Issue comment updated successfully.' });
-});
-
 
 // Endpoint to handle user sign-in
 app.post('/auth/signin', (req, res) => {
@@ -210,7 +200,6 @@ app.post('/auth/signin', (req, res) => {
     res.status(500).json({ message: 'Error reading data file.' });
   }
 });
-
 
 app.post('/auth/signup', (req, res) => {
   const newUser = req.body;
@@ -248,6 +237,82 @@ app.post('/auth/signup', (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Error reading or writing data file.' });
   }
+});
+
+
+
+app.get('/data/all', (req, res) => {
+  const dataFilePath = path.join(__dirname, 'data.json');
+  fs.readFile(dataFilePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading data.json:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.set('Content-Type', 'application/json');
+      res.send(data);
+    }
+  });
+});
+
+app.get('/data/issue/:issueId', (req, res) => {
+  const issueId = req.params.issueId;
+  const dataFilePath = path.join(__dirname, 'data.json');
+
+  fs.readFile(dataFilePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading data.json:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      const jsonData = JSON.parse(data);
+      const issues = jsonData.issues || [];
+
+      // Find the user with the specified email
+      const issue = issues.find(u => u.id === issueId);
+
+      if (issue) {
+
+        res.set('Content-Type', 'application/json');
+        res.send(issue);
+      } else {
+        res.status(404).json({ message: 'Issue not found.' });
+      }
+    }
+  });
+});
+
+// Endpoint to delete an issue by ID
+app.delete('/data/delete/:id', (req, res) => {
+  const issueId = req.params.id;
+
+  // Call the deleteIssueFromData function to delete the issue from data.json
+  deleteIssueFromData(issueId);
+
+  res.json({ message: `Issue with ID ${issueId} deleted successfully.` });
+});
+
+// Endpoint to delete a commebt in an issue by ID
+app.delete('/data/delete/:idissue/:idcomment', (req, res) => {
+  const issueId = req.params.idissue;
+  const commentId = req.params.idcomment;
+
+  // Call the deleteCommentFromIssue function to delete the comment from data.json
+  deleteCommentFromIssue(issueId, commentId);
+
+  res.json({ message: `Comment with ID ${commentId} in Issue ID ${issueId} deleted successfully.` });
+});
+
+// Endpoint to update an issue
+app.put('/data/update/issue', (req, res) => {
+  const updatedIssue = req.body;
+  updateIssueInData(updatedIssue);
+  res.json({ message: 'Issue updated successfully.' });
+});
+
+// Endpoint to update an issue comment
+app.put('/data/update/issue/comment', (req, res) => {
+  const { issueId, comment } = req.body;
+  updateIssueCommentInData(issueId, comment);
+  res.json({ message: 'Issue comment updated successfully.' });
 });
 
 

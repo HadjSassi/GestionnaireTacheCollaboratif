@@ -18,10 +18,15 @@ export class IssueReporterComponent implements OnChanges {
   constructor(private _projectService: ProjectService) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    const issueChange = changes.issue;
-    /*if (this.users && issueChange.currentValue !== issueChange.previousValue) {
-      this.reporter = this.users.find((x) => x.id === this.issue.reporterId);
-    }*/
+    try {
+      const issueChange = changes.issue;
+      if (this.users && issueChange.currentValue !== issueChange.previousValue) {
+        this.reporter = this.users.find((x) => x.id === this.issue.reporterId);
+      }
+    }catch (Exception){
+      const issueChange = changes.issue;
+    }
+
   }
 
   isUserSelected(user: JUser) {

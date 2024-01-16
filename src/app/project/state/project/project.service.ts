@@ -5,7 +5,7 @@ import { JComment } from '@trungk18/interface/comment';
 import { JIssue } from '@trungk18/interface/issue';
 import { JProject } from '@trungk18/interface/project';
 import { DateUtil } from '@trungk18/project/utils/date';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ProjectStore } from './project.store';
@@ -22,6 +22,10 @@ export class ProjectService {
 
   setLoading(isLoading: boolean) {
     this._store.setLoading(isLoading);
+  }
+
+  getIssue(issueId: string):Observable<any>{
+    return this._http.get(`${this.baseUrl}/data/issue/${issueId}`,);
   }
 
   getProject() {
@@ -50,16 +54,6 @@ export class ProjectService {
     }));
   }
 
-/*  updateIssue(issue: JIssue) {
-    issue.updatedAt = DateUtil.getNow();
-    this._store.update((state) => {
-      const issues = arrayUpsert(state.issues, issue.id, issue);
-      return {
-        ...state,
-        issues
-      };
-    });
-  }*/
   updateIssue(issue: JIssue) {
     this._http.put(`${this.baseUrl}/data/update/issue`, issue).subscribe(
       () => {
@@ -94,22 +88,6 @@ export class ProjectService {
       }
     );
   }
-
-/*
-  updateIssueComment(issueId: string, comment: JComment) {
-    const allIssues = this._store.getValue().issues;
-    const issue = allIssues.find((x) => x.id === issueId);
-    if (!issue) {
-      return;
-    }
-
-    const comments = arrayUpsert(issue.comments ?? [], comment.id, comment);
-    this.updateIssue({
-      ...issue,
-      comments
-    });
-  }
-*/
 
   updateIssueComment(issueId: string, comment: JComment) {
     const data = { issueId, comment };

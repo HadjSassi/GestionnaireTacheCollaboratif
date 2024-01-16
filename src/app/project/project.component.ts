@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectService } from './state/project/project.service';
 import { AuthService } from './auth/auth.service';
 import { Router} from '@angular/router';
+import { LoginPayload } from '@trungk18/project/auth/loginPayload';
+
 
 
 @Component({
@@ -12,11 +14,13 @@ import { Router} from '@angular/router';
 export class ProjectComponent implements OnInit {
   expanded: boolean;
   constructor(private _projectService: ProjectService,
+              private _authService: AuthService,
               private router: Router) {
     this.expanded = true;
   }
 
   ngOnInit(): void {
+    this._authService.login(new LoginPayload());
     const isUser = localStorage.getItem("user");
     if(isUser === null || isUser === ""){
       this.router.navigate(['/auth']);

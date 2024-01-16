@@ -59,7 +59,7 @@
     <div class="item"
          *ngIf="authQuery.user$ | async as user">
       <div nz-tooltip
-           [nzTooltipTitle]="user.name"
+           [nzTooltipTitle]="'Régler Profile: '+user.name"
            nzTooltipPlacement="right"
            class="itemIcon">
         <j-avatar class="flex"
@@ -68,15 +68,14 @@
         </j-avatar>
       </div>
     </div>
-    <!--todo for logout and for adding new users-->
-    <div class="item"
-         *ngIf="authQuery.user$ | async as user">
+    <div class="item">
       <div nz-tooltip
-           [nzTooltipTitle]="user.name"
+           nzTooltipTitle="Quitter"
            nzTooltipPlacement="right"
-           class="itemIcon">
+           class="itemIcon"
+           (click)="signout()">
         <j-avatar class="flex"
-                  [avatarUrl]="user.avatarUrl"
+                  avatarUrl="assets/quitter.png"
                   [size]="26">
         </j-avatar>
       </div>

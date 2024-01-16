@@ -1,6 +1,6 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContentLoaderModule } from '@ngneat/content-loader';
@@ -16,9 +16,15 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { QuillModule } from 'ngx-quill';
 import { JiraControlModule } from '../jira-control/jira-control.module';
 import { AddIssueModalComponent } from './components/add-issue-modal/add-issue-modal.component';
-import { IssueAssigneesSelectComponent } from './components/add-issue-modal/issue-assignees-select/issue-assignees-select.component';
-import { IssuePrioritySelectComponent } from './components/add-issue-modal/issue-priority-select/issue-priority-select.component';
-import { IssueReporterSelectComponent } from './components/add-issue-modal/issue-reporter-select/issue-reporter-select.component';
+import {
+  IssueAssigneesSelectComponent
+} from './components/add-issue-modal/issue-assignees-select/issue-assignees-select.component';
+import {
+  IssuePrioritySelectComponent
+} from './components/add-issue-modal/issue-priority-select/issue-priority-select.component';
+import {
+  IssueReporterSelectComponent
+} from './components/add-issue-modal/issue-reporter-select/issue-reporter-select.component';
 import { IssueTypeSelectComponent } from './components/add-issue-modal/issue-type-select/issue-type-select.component';
 import { BoardPageComponents } from './components/board';
 import { IssueUtilComponents } from './components/issues';
@@ -32,6 +38,10 @@ import { BoardComponent } from './pages/board/board.component';
 import { FullIssueDetailComponent } from './pages/full-issue-detail/full-issue-detail.component';
 import { ProjectRoutingModule } from './project-routing.module';
 import { ProjectComponent } from './project.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -69,7 +79,15 @@ import { ProjectComponent } from './project.component';
     ReactiveFormsModule,
     JiraControlModule,
     ContentLoaderModule,
-    QuillModule
+    QuillModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule
+
+  ], providers: [
+    DatePipe
   ]
 })
-export class ProjectModule {}
+export class ProjectModule {
+}

@@ -27,22 +27,12 @@ export class AuthService {
     const account = { email, password };
     return this._http.post(`${this.baseUrl}/auth/signin`, account);
   }
-  /*signIn(email: string, password: string): string{
-    const account = {email, password}
-    this._http.post(`${this.baseUrl}/auth/signin`, account).subscribe(
-      () => {
-        console.log('SignIn Perfectly');
-        return("true");
-      },
-      (error) => {
-        this._store.setError(error);
-        console.log('Error');
-        console.log(error);
-        return(error);
-      }
-    );
-    return "";
-  }*/
+
+
+  getUser(email : string): Observable<any>{
+    return this._http.get<JUser>(`${this.baseUrl}/data/auth/${email}`);
+  }
+
 
   signUp(email: string, password: string): Observable<any> {
     const user : JUser = {
@@ -54,21 +44,4 @@ export class AuthService {
     }
     return this._http.post(`${this.baseUrl}/auth/signup`, user);
   }
-  /*signUp(email: string, pass: string):string{
-    const account = {email, pass}
-    this._http.post(`${this.baseUrl}/auth/signup`, account).subscribe(
-      () => {
-        console.log('SignUp Perfectly');
-        return("true");
-      },
-      (error) => {
-        this._store.setError(error);
-        console.log('Error');
-        console.log(error);
-        return(error);
-      }
-    );
-    return "";
-  }
-*/
 }

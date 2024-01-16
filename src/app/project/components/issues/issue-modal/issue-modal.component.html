@@ -2,6 +2,7 @@
     <issue-detail [issue]="issue$ | async"
                   [isShowFullScreenButton]="true"
                   [isShowCloseButton]="true"
+                  [issueId2]="issueId2"
                   (onClosed)="closeModal()"
                   (onOpenIssue)="openIssuePage($event)"
                   (onDelete)="deleteIssue($event)">
