@@ -61,6 +61,25 @@ export class AddIssueModalComponent implements OnInit {
     this.endDate = event.target.value;
   }
 
+  onEditorContentChange(event: any) {
+    // Assuming quill editor fires 'text-change' event
+    const delta = event.delta;
+
+    // Check if the delta includes the specific formats for image or video
+    const hasImage = delta.ops.some(op => op.insert && op.insert.image);
+    const hasVideo = delta.ops.some(op => op.insert && op.insert.video);
+
+    if (hasImage) {
+      console.log('User inserted an image.');
+      // Handle image insertion here
+    }
+
+    if (hasVideo) {
+      console.log('User inserted a video.');
+      // Handle video insertion here
+    }
+  }
+
   initForm() {
     this.issueForm = this._fb.group({
       type: ['Tache'],
@@ -84,7 +103,6 @@ export class AddIssueModalComponent implements OnInit {
       createdAt: now,
       updatedAt: this.endDate
     };
-
     this._projectService.updateIssue(issue);
     this.closeModal();
   }

@@ -38,6 +38,7 @@
         Description de tache
       </label>
       <quill-editor class="content-editor"
+                    (onContentChanged)="onEditorContentChange($event)"
                     [styles]="{'min-height': '120px'}"
                     [modules]="editorOptions"
                     formControlName="description"

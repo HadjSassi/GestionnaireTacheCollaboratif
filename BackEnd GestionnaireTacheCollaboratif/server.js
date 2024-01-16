@@ -4,11 +4,12 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 const port = 3000;
+const { createCanvas, loadImage } = require('canvas');
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:4200"); // Replace with the actual origin of your Angular app
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // Include DELETE method
+  res.header('Access-Control-Allow-Origin', 'http://localhost:4200'); // Replace with the actual origin of your Angular app
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // Include DELETE method
   next();
 });
 // Increase the limit for the request body
@@ -45,6 +46,29 @@ function updateIssueInData(issue) {
     data.issues.push(issue);
   }
 
+  // Check if issue.description contains an <img> tag
+  while (issue.description.includes('<img') && issue.description.includes('data:image')) {
+
+    // Extract base64-encoded data from the <img> tag
+    const matches = issue.description.match(/<img.*?src=\"data:image\/png;base64,(.*?)\".*?>/);
+    if (matches && matches[1]) {
+      const base64Data = matches[1];
+
+      // Decode base64 data and create a Buffer
+      const buffer = Buffer.from(base64Data, 'base64');
+
+      // Generate a unique image file name incorporating timestamp
+      const timestamp = Date.now();
+      const imgPath = path.join(__dirname, '..', 'src', 'assets', 'img', `${issue.title}_${timestamp}.png`);
+      fs.writeFileSync(imgPath, buffer);
+      // Save the buffer as an image
+
+
+      // Replace the <img> tag with a new tag containing the path to the created image
+      issue.description = issue.description.replace(/<img.*?src="data:image\/png;base64,(.*?)".*?>/g, `<img src="assets/img/${issue.title}_${timestamp}.png" alt="${issue.title}">`);
+    }
+  }
+
   fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
 }
 
@@ -73,7 +97,7 @@ function updateIssueCommentInData(issueId, comment) {
         user: comment.user,
         createdAt: comment.createdAt,
         updatedAt: comment.updatedAt,
-        body: comment.body,
+        body: comment.body
       };
       console.log(`Comment with ID ${comment.id} updated in issue with ID ${issueId} successfully.`);
     } else {
@@ -87,7 +111,7 @@ function updateIssueCommentInData(issueId, comment) {
         user: comment.user,
         createdAt: comment.createdAt,
         updatedAt: comment.updatedAt,
-        body: comment.body,
+        body: comment.body
       });
       console.log(`New comment added to issue with ID ${issueId} successfully.`);
     }
@@ -141,8 +165,8 @@ app.get('/data/auth/:email', (req, res) => {
           id: user.id,
           name: user.name,
           avatarUrl: user.avatarUrl,
-          createdAt: "2020-06-16T16:00:00.000Z", // Replace with the actual creation date
-          updatedAt: "2020-06-16T16:00:00.000Z"  // Replace with the actual update date
+          createdAt: '2020-06-16T16:00:00.000Z', // Replace with the actual creation date
+          updatedAt: '2020-06-16T16:00:00.000Z'  // Replace with the actual update date
         };
 
         res.set('Content-Type', 'application/json');
@@ -240,7 +264,6 @@ app.post('/auth/signup', (req, res) => {
 });
 
 
-
 app.get('/data/all', (req, res) => {
   const dataFilePath = path.join(__dirname, 'data.json');
   fs.readFile(dataFilePath, 'utf8', (err, data) => {
@@ -314,7 +337,6 @@ app.put('/data/update/issue/comment', (req, res) => {
   updateIssueCommentInData(issueId, comment);
   res.json({ message: 'Issue comment updated successfully.' });
 });
-
 
 
 app.listen(port, () => {
