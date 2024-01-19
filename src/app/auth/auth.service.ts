@@ -34,6 +34,11 @@ export class AuthService {
   }
 
 
+  setUser(user : JUser): Observable<any>{
+    return this._http.put<JUser>(`${this.baseUrl}/data/auth/${user.email}/update`,user);
+  }
+
+
   signUp(email: string, password: string): Observable<any> {
     const user : JUser = {
       email : email,
@@ -44,4 +49,13 @@ export class AuthService {
     }
     return this._http.post(`${this.baseUrl}/auth/signup`, user);
   }
+
+
+  updateProfilePicture(email: string, image: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('profilePicture', image, image.name);
+
+    return this._http.post(`${this.baseUrl}/data/auth/${email}/update-picture`, formData);
+  }
+
 }

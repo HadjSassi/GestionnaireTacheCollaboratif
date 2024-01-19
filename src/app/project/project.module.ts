@@ -42,6 +42,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ProfilComponent } from './pages/profil/profil.component';
+import { AboutComponent } from './pages/about/about.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     IssuePrioritySelectComponent,
     IssueReporterSelectComponent,
     IssueAssigneesSelectComponent,
-    ResizerComponent
+    ResizerComponent,
+    ProfilComponent,
+    AboutComponent
   ],
   imports: [
     CommonModule,

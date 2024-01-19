@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+const multer = require('multer');
 const app = express();
 const port = 3000;
 const { createCanvas, loadImage } = require('canvas');
@@ -14,6 +15,19 @@ app.use((req, res, next) => {
 });
 // Increase the limit for the request body
 app.use(bodyParser.json({ limit: '1Gb' })); // Adjust the limit as needed
+
+// Multer configuration for handling file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '..' ,'src', 'assets', 'avatars'));
+  },
+  filename: (req, file, cb) => {
+    const fileName = `${file.originalname}`;
+    cb(null, fileName);
+  },
+});
+
+const upload = multer({ storage });
 
 // Function to delete an issue from data.json
 function deleteIssueFromData(issueId) {
@@ -28,6 +42,84 @@ function deleteIssueFromData(issueId) {
   // Save the updated data back to data.json
   fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
 }
+function authenticateUser(email, password, data) {
+  if (data.users && Array.isArray(data.users)) {
+    return data.users.find(u => u.email === email && u.password === password);
+  } else {
+    return null;
+  }
+}
+
+function registerUser(newUser, data) {
+  if (data.users && Array.isArray(data.users)) {
+    const existingUser = data.users.find(u => u.email === newUser.email);
+
+    if (existingUser) {
+      return { success: false, message: 'User with this email already exists.' };
+    } else {
+      data.users.push(newUser);
+      return { success: true, message: 'Sign-up successful.', user: newUser };
+    }
+  } else {
+    return { success: false, message: 'Invalid data file format.' };
+  }
+}
+
+function getUserByEmail(userEmail, data) {
+  const users = data.users || [];
+  const user = users.find(u => u.email === userEmail);
+
+  if (user) {
+    const formattedUser = {
+      id: user.id,
+      name: user.name,
+      avatarUrl: user.avatarUrl,
+      email: user.email
+    };
+    return { success: true, user: formattedUser };
+  } else {
+    return { success: false, message: 'User not found.' };
+  }
+}
+
+function updateUserByEmail(email, updatedUser) {
+  const dataFilePath = path.join(__dirname, 'data.json');
+
+  try {
+    // Check if the file exists
+    fs.accessSync(dataFilePath, fs.constants.R_OK);
+
+    const rawData = fs.readFileSync(dataFilePath);
+    const data = JSON.parse(rawData);
+
+    // Check if the "users" array exists in data.json
+    if (data.users && Array.isArray(data.users)) {
+      // Find the user with the specified email
+      const existingUserIndex = data.users.findIndex(u => u.email === email);
+
+      if (existingUserIndex !== -1) {
+        // Update the existing user
+        data.users[existingUserIndex] = updatedUser;
+
+        // Save the updated data back to data.json
+        fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
+
+        console.log('User updated successfully:', updatedUser);
+        return true;
+      } else {
+        console.log('User not found:', email);
+        return false;
+      }
+    } else {
+      console.log('Invalid data file format.');
+      return false;
+    }
+  } catch (err) {
+    console.log('Error reading or writing data file:', err);
+    return false;
+  }
+}
+
 
 // Function to update an issue in data.json
 function updateIssueInData(issue) {
@@ -165,8 +257,7 @@ app.get('/data/auth/:email', (req, res) => {
           id: user.id,
           name: user.name,
           avatarUrl: user.avatarUrl,
-          createdAt: '2020-06-16T16:00:00.000Z', // Replace with the actual creation date
-          updatedAt: '2020-06-16T16:00:00.000Z'  // Replace with the actual update date
+          email: user.email
         };
 
         res.set('Content-Type', 'application/json');
@@ -176,6 +267,20 @@ app.get('/data/auth/:email', (req, res) => {
       }
     }
   });
+});
+
+// Endpoint to update a user by email
+app.put('/data/auth/:email/update', (req, res) => {
+  const userEmail = req.params.email;
+  const updatedUser = req.body;
+
+  const success = updateUserByEmail(userEmail, updatedUser);
+
+  if (success) {
+    res.json({ message: 'User updated successfully.', user: updatedUser });
+  } else {
+    res.status(404).json({ message: 'User not found or failed to update.' });
+  }
 });
 
 app.get('/auth/all', (req, res) => {
@@ -194,8 +299,6 @@ app.get('/auth/all', (req, res) => {
 // Endpoint to handle user sign-in
 app.post('/auth/signin', (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
-  console.log(password);
   // Load existing users from data.json
   const dataFilePath = path.join(__dirname, 'data.json');
 
@@ -338,7 +441,32 @@ app.put('/data/update/issue/comment', (req, res) => {
   res.json({ message: 'Issue comment updated successfully.' });
 });
 
+app.post('/data/auth/:email/update-picture', upload.single('profilePicture'), (req, res) => {
+  const userEmail = req.params.email;
+  const imagePath = path.basename(req.file.path);
+
+  // Load existing data from data.json
+  const dataFilePath = path.join(__dirname, 'data.json');
+  const rawData = fs.readFileSync(dataFilePath);
+  let data = JSON.parse(rawData);
+
+  // Find the user with the specified email
+  const userToUpdate = data.users.find(u => u.email === userEmail);
+  if (userToUpdate) {
+    // Update the user's avatarUrl
+    userToUpdate.avatarUrl = `assets/avatars/${imagePath}`;
+
+    // Save the updated data back to data.json
+    fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
+
+    res.json({ message: 'Profile picture updated successfully.', imagePath });
+  } else {
+    res.status(404).json({ message: 'User not found.' });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+
+

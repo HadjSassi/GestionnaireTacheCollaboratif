@@ -2,6 +2,7 @@
   <div class="navbarLeft-content">
     <div class="logoLink"
          title="Mini-Projet Atelier Développement">
+<!--
       <svg class="w-8 h-8 text-textLogo"
            viewBox="0 0 32 32"
            xmlns="http://www.w3.org/2000/svg"
@@ -40,6 +41,8 @@
                 fill="url(#uid11-2"></path>
         </g>
       </svg>
+-->
+      <img src="assets/white.png">
     </div>
 
     <div *ngFor="let item of items"
@@ -61,6 +64,7 @@
       <div nz-tooltip
            [nzTooltipTitle]="'Régler Profile: '+user.name"
            nzTooltipPlacement="right"
+           (click)="profil()"
            class="itemIcon">
         <j-avatar class="flex"
                   [avatarUrl]="user.avatarUrl"

@@ -51,6 +51,9 @@ export class NavbarLeftComponent implements OnInit {
     this.router.navigate(['/auth']);
   }
 
+  profil() {
+    this.router.navigate(['/project/profil']);
+  }
 }
 
 class NavItem {

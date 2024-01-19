@@ -15,10 +15,9 @@
     {
       "id": "7ac265f9-b9ac-443f-a2b2-795682e579a4",
       "name": "Iron Man",
-      "email": "admin@admin.admin",
-      "password": "admin",
       "avatarUrl": "assets/avatars/2.jpg",
-      "projectId": "140892"
+      "email": "admin@admin.admin",
+      "password": "admin"
     },
     {
       "id": "94502aad-c97f-43e1-a9d1-28cf3e4937a7",
@@ -45,11 +44,11 @@
       "projectId": "140892"
     },
     {
+      "id": "738b-6e-ba-a6-2e5966",
+      "name": "visitor",
+      "avatarUrl": "assets/avatars/mahdi.png",
       "email": "visitor@visitor.visitor",
-      "avatarUrl": "assets/avatars/1.jpg",
-      "password": "visitor",
-      "name": "visitor@visitor.visitor",
-      "id": "738b-6e-ba-a6-2e5966"
+      "password": "visitor"
     }
   ],
   "issues": [
@@ -289,6 +288,21 @@
           "createdAt": "2024-01-14T02:11:45.202Z",
           "updatedAt": "2024-01-14T02:12:20.044Z",
           "body": "Hello World"
+        },
+        {
+          "id": "1705628458789",
+          "issueId": "9554",
+          "user": {
+            "token": "1705628437521",
+            "loading": false,
+            "id": "738b-6e-ba-a6-2e5966",
+            "name": "visitor",
+            "avatarUrl": "assets/avatars/mahdi.png",
+            "email": "visitor@visitor.visitor"
+          },
+          "createdAt": "2024-01-19T01:40:58.789Z",
+          "updatedAt": "2024-01-19T01:40:58.789Z",
+          "body": "hello world"
         }
       ]
     },
